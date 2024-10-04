@@ -76,7 +76,7 @@ def run():
             else:
                 ranks_rev = {k[1]:k[0] for k in ranks.items()}
                 # print(ranks_rev)
-                group_custom = ranks_rev[group_to_use]
+                group_custom = group_to_use+':'+str(ranks_rev[group_to_use])
 
             ox_map[ox] = group_custom
 
@@ -86,7 +86,7 @@ def run():
 
         cnt = Counter(dbname_map.values())
 
-    print(cnt.most_common())
+    logging.debug(cnt.most_common())
 
     # return -1
 
@@ -199,9 +199,9 @@ def run():
         # break
     
     with open(base_out_name, 'w') as output:
-        output.write('taxid\tproteins\n')
+        output.write('group\ttaxid\tproteins\n')
         for k, v in out_dict.items():
-            output.write('\t'.join((str(k), str(v))) + '\n')
+            output.write('\t'.join(map(str, k.split(':')+[v])) + '\n')
 
     
 
