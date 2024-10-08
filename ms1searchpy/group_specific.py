@@ -62,29 +62,29 @@ def run():
 
     cnt = Counter(dbname_map.values())
 
-    if group_to_use not in ['dbname', 'OX']:
-        for ox in cnt.keys():
+    # if group_to_use not in ['dbname', 'OX']:
+    for ox in cnt.keys():
 
-            line = ncbi.get_lineage(ox)
-            ranks = ncbi.get_rank(line)
-            if group_to_use not in ranks.values():
-                logger.warning('%s does not have %s', str(ox), group_to_use)
-                group_custom = 'OX:' + ox
-                # print('{} does not have {}'.format(i, group_to_use))
-                # continue
+        line = ncbi.get_lineage(ox)
+        ranks = ncbi.get_rank(line)
+        if group_to_use not in ranks.values():
+            logger.warning('%s does not have %s', str(ox), group_to_use)
+            group_custom = 'OX:' + ox
+            # print('{} does not have {}'.format(i, group_to_use))
+            # continue
 
-            else:
-                ranks_rev = {k[1]:k[0] for k in ranks.items()}
-                # print(ranks_rev)
-                group_custom = group_to_use+':'+str(ranks_rev[group_to_use])
+        else:
+            ranks_rev = {k[1]:k[0] for k in ranks.items()}
+            # print(ranks_rev)
+            group_custom = group_to_use+':'+str(ranks_rev[group_to_use])
 
-            ox_map[ox] = group_custom
+        ox_map[ox] = group_custom
 
 
-        for dbname in list(dbname_map.keys()):
-            dbname_map[dbname] = ox_map[dbname_map[dbname]]
+    for dbname in list(dbname_map.keys()):
+        dbname_map[dbname] = ox_map[dbname_map[dbname]]
 
-        cnt = Counter(dbname_map.values())
+    cnt = Counter(dbname_map.values())
 
     logging.debug(cnt.most_common())
 
